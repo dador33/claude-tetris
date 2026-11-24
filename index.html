@@ -8,6 +8,10 @@
 </head>
 <body>
   <h1 class="title">TETRIS</h1>
+  <label class="theme-toggle">
+    <input type="checkbox" id="theme-toggle" role="switch" checked />
+    <span>Modo oscuro</span>
+  </label>
   <div class="wrapper">
     <div class="game-container">
       <canvas id="board" width="300" height="600"></canvas>
@@ -53,6 +57,17 @@
     </div>
   </div>
 
+  <script>
+    // Aplica el tema antes de pintar para evitar parpadeo
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('theme'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') {
+        t = window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      }
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
   <script src="game.js"></script>
 </body>
 </html>
