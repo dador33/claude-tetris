@@ -8,31 +8,31 @@
 </head>
 <body>
   <h1 class="title">TETRIS</h1>
-  <label class="theme-toggle">
-    <input type="checkbox" id="theme-toggle" role="switch" checked />
-    <span>Modo oscuro</span>
-  </label>
+  <div class="toolbar">
+    <label class="theme-toggle">
+      <input type="checkbox" id="theme-toggle" role="switch" checked />
+      <span>Modo oscuro</span>
+    </label>
+    <label class="mode-picker">
+      <span>Modo</span>
+      <select id="mode-select" aria-label="Modo de juego">
+        <option value="">Clásico</option>
+        <!-- Los retos se añaden desde game.js a partir de CHALLENGES (rules.js) -->
+      </select>
+    </label>
+  </div>
   <div class="wrapper">
     <div class="game-container">
-      <canvas id="board" width="300" height="600"></canvas>
-
-      <aside class="panel">
+      <aside class="panel panel-left">
         <div class="panel-section">
-          <span class="label">SCORE</span>
-          <span class="value" id="score">0</span>
-        </div>
-        <div class="panel-section">
-          <span class="label">LINES</span>
-          <span class="value" id="lines">0</span>
-        </div>
-        <div class="panel-section">
-          <span class="label">LEVEL</span>
-          <span class="value" id="level">1</span>
+          <span class="label">HOLD</span>
+          <canvas id="hold-canvas" width="80" height="80"></canvas>
         </div>
 
-        <div class="panel-section">
-          <span class="label">NEXT</span>
-          <canvas id="next-canvas" width="120" height="120"></canvas>
+        <div class="panel-section energy" id="energy-section">
+          <span class="label">ENERGÍA</span>
+          <div class="energy-bar"><div class="energy-fill" id="energy-fill"></div></div>
+          <span class="energy-label" id="energy-label">0%</span>
         </div>
 
         <div class="panel-section controls">
@@ -42,10 +42,57 @@
             <li><kbd>↑</kbd> rotar</li>
             <li><kbd>↓</kbd> bajar</li>
             <li><kbd>Space</kbd> caída</li>
+            <li><kbd>C</kbd>/<kbd>Shift</kbd> reservar</li>
             <li><kbd>P</kbd> pausa</li>
+            <li><kbd>E</kbd> habilidad</li>
+            <li><kbd>M</kbd> sonido</li>
           </ul>
         </div>
       </aside>
+
+      <canvas id="board" width="240" height="480"></canvas>
+
+      <aside class="panel panel-right">
+        <div class="panel-section">
+          <span class="label">NEXT</span>
+          <canvas id="next-canvas" width="80" height="80"></canvas>
+        </div>
+
+        <div class="panel-section">
+          <span class="label">SCORE</span>
+          <span class="value" id="score">0</span>
+        </div>
+
+        <div class="stat-row">
+          <div class="panel-section">
+            <span class="label">LINES</span>
+            <span class="value" id="lines">0</span>
+          </div>
+          <div class="panel-section">
+            <span class="label">LEVEL</span>
+            <span class="value" id="level">1</span>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <span class="label">COMBO</span>
+          <span class="value" id="combo">–</span>
+        </div>
+
+        <div class="panel-section" id="goal-section" hidden>
+          <span class="label">OBJETIVO</span>
+          <span class="goal" id="goal"></span>
+          <span class="value" id="timer">0:00</span>
+        </div>
+      </aside>
+    </div>
+
+    <div id="ability-overlay" class="overlay hidden">
+      <div class="overlay-box">
+        <p id="ability-title">ELIGE UNA HABILIDAD</p>
+        <div id="ability-list"></div>
+        <p class="ability-hint"><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> elegir · <kbd>Esc</kbd> cancelar</p>
+      </div>
     </div>
 
     <div id="overlay" class="overlay hidden">
@@ -68,6 +115,7 @@
       document.documentElement.setAttribute('data-theme', t);
     })();
   </script>
+  <script src="rules.js"></script>
   <script src="game.js"></script>
 </body>
 </html>
